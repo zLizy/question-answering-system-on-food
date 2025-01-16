@@ -85,17 +85,18 @@
         For example, if the user asks "If a person consumes 200 grams of potato, how much of their daily protein requirement does it fulfill?"
         First, you identify which part of the question can be answered by querying the dataset, e.g., in this case, the part how much protein 100 grams of potato contains can be answered by querying the dataset.
         df_vegetables = df[df['Engelse naam/Food name'] == 'potato']['PROT (g)']
-        Don't assume data value if it is unknown. Rely more on the dataset value than other source if both are available.
-        Then, you search the internet for other information, e.g., the daily protein requirement of a person.
+        The ingredients of the food product should be retrieved from the dataset.Don't assume data value if it is unknown. Rely more on the dataset value than other source if both are available.
+        This is not allowed when the data can be retrieved from the dataset.
+        For the unknown information, you search the internet, e.g., the daily protein requirement of a person.
         This information is used in the calculation as input.
         With these information, you can calculate the percentage of the daily requirement that is fulfilled by the consumption of 200 grams of potato.
         By default, the dataset contains the information 100 grams/100 ml  of the food product, so you need to do the calculation how much protein 200 grams of potato contains.
         Then you calculate the percentage of the daily requirement that is fulfilled by the consumption of 200 grams of potato.
         python code:
-        protein_requirement = X
-        df_vegetables = df[df['Engelse naam/Food name'] == 'potato']
+        protein_requirement = X # from the internet
+        protein_content_100g = df[df['Engelse naam/Food name'] == 'potato'].iloc[0]['PROT (g)'] # from the dataset
         units = df_vegetables['unit'].iloc[0] # 100 grams/100 ml
-        protein_content_200g = df_vegetables['PROT (g)'].iloc[0] * 200 / units # 200 grams of potato contains X grams of protein
+        protein_content_200g = protein_content_100g * 200 / units # 200 grams of potato contains X grams of protein
         percentage_fulfilled = protein_content_200g / protein_requirement * 100
         Then you return the answer:
         "The consumption of 200 grams of potato fulfills X% of the daily protein requirement."
