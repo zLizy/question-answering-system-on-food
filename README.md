@@ -4,8 +4,22 @@
 1. Install dependencies
    
 ```pip install -r /path/to/requirements.txt```
-3. Run the dashboard
+
+2. Run the dashboard
 
 ```python dashboard.py```
-4. Access the dashboard through [https://127.0.1.0:8050/](http://127.0.0.1:8050/)
+3. Access the dashboard through [https://127.0.1.0:8050/](http://127.0.0.1:8050/)
 ![Dashboard](img/ui.png)
+
+## Solution
+This demo uses LLMs to process user request on the target dataset and return python script.
+Results are returned and desplayed after executing the python script. 
+
+### UI
+- Python
+- Library: Dash, Pandas
+### Back-end
+- Python
+- API
+   * OpenAI - gpt-4o
+   * Perplexity - llama-3.1-sonar-large-128k-online
