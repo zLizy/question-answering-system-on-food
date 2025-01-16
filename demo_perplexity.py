@@ -1,11 +1,7 @@
 import argparse
 from openai import OpenAI
 
-import sys
 from io import StringIO
-import base64
-import requests
-from together import Together
 from dotenv import load_dotenv
 import os
 from contextlib import redirect_stdout
@@ -63,7 +59,6 @@ def llm(prompt):
             {"role": "system", "content": sys_prompt},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=2048,
         temperature=0.7,
     )
     message = completion.choices[0].message

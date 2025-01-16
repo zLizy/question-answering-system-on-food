@@ -1,11 +1,10 @@
-
 import pandas as pd
 
 # Load the dataset
 df = pd.read_csv('NEVO2023_8.0_clean.csv')
 
 # Find the vitamin C content in 100 grams of white asparagus
-white_asparagus_vitamin_c = df[df['Voedingsmiddelnaam/Dutch food name'] == 'Asperge witte rauw']['VITC (mg)'].values[0]
+white_asparagus_vitamin_c = df[df['Voedingsmiddelnaam/Dutch food name'] == 'Asperge witte rauw']['VITC (mg)'].iloc[0]
 
 # Calculate the vitamin C content in 200 grams
 vitamin_c_200g = white_asparagus_vitamin_c * 2

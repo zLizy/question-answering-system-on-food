@@ -4,8 +4,8 @@ from dash import html, dcc
 from dash.dependencies import Input, Output
 from dash import dash_table
 import plotly.express as px
-import subprocess
 import dash_bootstrap_components as dbc
+# import subprocess
 import os
 import demo_perplexity
 import demo_openai
