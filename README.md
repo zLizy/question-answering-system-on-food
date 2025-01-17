@@ -8,6 +8,8 @@ cd question-answering-system-on-food
 pip install -r requirements.txt
 ```
 
+Add your perplexity API key in `.env`.
+
 2. Run the dashboard
 
 ```python dashboard.py```
