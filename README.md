@@ -2,10 +2,12 @@
 
 ## Steps
 1. Install dependencies
-   
+
+Python version: 3.9
+
 ```shell
 cd question-answering-system-on-food
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 Add your perplexity API key in `.env`.
