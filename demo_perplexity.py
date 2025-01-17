@@ -68,12 +68,14 @@ def llm(prompt):
     except AttributeError:
         citations = []
     try:
-        splits = message.content.split("```python")
-        script = splits[1].split("```")[0]
-        explain = splits[0]
+        if 'Complete Code' in message.content:
+            script = message.content.split('Complete Code')[1].split('```python')[1].split('```')[0]
+        else:
+            script = extract_code_blocks(message.content)
+            # explain = splits[0]
     except:
         script = []
-        explain = message.content
+    explain = message.content
     # f = open("script.py", "w")
     # f.write(script)
     # f.close()
@@ -86,6 +88,36 @@ def llm(prompt):
         output = redirected_output.getvalue()
     output = output+'\n'+explain
     return script, citations,output
+
+def extract_code_blocks(text, language='python'):
+    # Define the start and end markers for the code block
+    start_marker = f"```{language}"
+    end_marker = "```"
+    code_blocks = []
+    start_pos = 0
+
+    while True:
+        # Find the start position of the next code block
+        start_pos = text.find(start_marker, start_pos)
+        if start_pos == -1:
+            break  # No more code blocks found
+
+        # Move the start position to the end of the start marker
+        start_pos += len(start_marker)
+
+        # Find the end position of the code block
+        end_pos = text.find(end_marker, start_pos)
+        if end_pos == -1:
+            break  # No end marker found, stop searching
+
+        # Extract and append the code block
+        code_block = text[start_pos:end_pos].strip()
+        code_blocks.append(code_block)
+
+        # Move the start position past the end marker for the next search
+        start_pos = end_pos + len(end_marker)
+
+    return code_blocks
 
 def main():
     parser = argparse.ArgumentParser(description='Process a prompt for the LLM.')

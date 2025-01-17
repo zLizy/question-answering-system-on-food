@@ -50,6 +50,16 @@ app.layout = html.Div(children=[
             ], style={'width': '48%', 'display': 'inline-block', 'verticalAlign': 'top'}),  # Adjust width as needed
 
             html.Div([
+                dcc.RadioItems(
+                    id='model_selector',
+                    options=[
+                        {'label': 'Perplexity', 'value': 'perplexity'},
+                        {'label': 'OpenAI', 'value': 'openai'}
+                    ],
+                    value='perplexity',  # Default value
+                    labelStyle={'display': 'inline-block'}
+                ),
+                html.Br(),
                 dcc.Textarea(
                     id='question-input',
                     placeholder='Enter your question here',
@@ -88,19 +98,16 @@ def update_bar_chart(selected_food, selected_value):
 @app.callback(
     Output('output-container', 'children'),
     [Input('submit-button', 'n_clicks')],
-    [dash.dependencies.State('question-input', 'value')]
+    [dash.dependencies.State('question-input', 'value'),
+     dash.dependencies.State('model_selector', 'value')]
 )
-def update_output(n_clicks, value):
+def update_output(n_clicks, value, selected_model):
     if n_clicks > 0 and value:
-        # Call the llm function from demo.py with the input value
-        # result = subprocess.run(['python3.9', 'demo.py', value], capture_output=True, text=True)
-        
-        script, citations,output = demo_perplexity.llm(value)
-        # script, citations,output = demo_openai.llm(value)
-        # print(script)
-        # print(citations)
-        # print(output)
-        
+        if selected_model == 'perplexity':
+            script, citations, output = demo_perplexity.llm(value)
+        else:
+            script, citations, output = demo_openai.llm(value)
+
         # Check for new files in the current directory
         new_files = [f for f in os.listdir('.') if os.path.isfile(f) and f.endswith('.csv') and not f.startswith('NEVO')]
         
