@@ -9,6 +9,7 @@ from together import Together
 from dotenv import load_dotenv
 import os
 from contextlib import redirect_stdout
+from demo_perplexity import extract_code_blocks
 
 # Load environment variables from .env file
 load_dotenv()
@@ -48,32 +49,35 @@ def llm(prompt):
             {"role": "developer", "content": sys_prompt},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=2048,
+        max_tokens=10240,
         temperature=0.9,
     )
     message = completion.choices[0].message
     try:
-        splits = message.content.split("```python")
-        script = splits[1].split("```")[0]
-        explain = splits[0]
+        if 'Complete Code' in message.content:
+            script = message.content.split('Complete Code')[1].split('```python')[1].split('```')[0]
+        else:
+            script = extract_code_blocks(message.content)
+            script = ('\n').join(script)
+            # explain = splits[0]
     except:
         script = []
-        explain = message.content
-
+    explain = message.content
+    # f = open("script.py", "w")
+    # f.write(script)
+    # f.close()
+    # print(citations)
+    output=''
     if script:
         redirected_output = StringIO()
         with redirect_stdout(redirected_output):
             exec(script)
         output = redirected_output.getvalue()
     output = output+'\n'+explain
+    
     return script, [], output
 
-    redirected_output = StringIO()
-    with redirect_stdout(redirected_output):
-        exec(script)
-    output = redirected_output.getvalue()
-    return script, [], output
-
+    
 def main():
     parser = argparse.ArgumentParser(description='Process a prompt for the LLM.')
     parser.add_argument('prompt', type=str, help='The prompt to send to the LLM')
