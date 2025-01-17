@@ -70,9 +70,12 @@ def llm(prompt):
     try:
         if 'Complete Code' in message.content:
             script = message.content.split('Complete Code')[1].split('```python')[1].split('```')[0]
+        elif 'combined code' in message.content.lower():
+            script = message.content.split('combined code')[1].split('```python')[1].split('```')[0]
         else:
-            script = extract_code_blocks(message.content)
-            script = ('\n').join(script)
+            script = message.content.split('```python')[-1].split('```')[0]
+            # script = extract_code_blocks(message.content)
+            # script = ('\n').join(script)
             # explain = splits[0]
     except:
         script = []
