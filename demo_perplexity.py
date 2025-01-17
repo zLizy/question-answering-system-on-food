@@ -72,6 +72,7 @@ def llm(prompt):
             script = message.content.split('Complete Code')[1].split('```python')[1].split('```')[0]
         else:
             script = extract_code_blocks(message.content)
+            script = ('\n').join(script)
             # explain = splits[0]
     except:
         script = []
